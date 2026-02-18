@@ -12,7 +12,7 @@ if (!uri) {
 }
 
 const bossesImages = {
-  'Artorias the Abysswalker': 'https://placehold.co/600x800?text=Artorias',
+  'Artorias the Abysswalker': 'https://cdnb.artstation.com/p/assets/images/images/015/788/393/large/brian-moncus-artorias1.jpg?1549640388',
   'Ornstein and Smough': 'https://placehold.co/600x800?text=Ornstein+%26+Smough',
   'Sister Friede': 'https://placehold.co/600x800?text=Sister+Friede',
   'Nameless King': 'https://placehold.co/600x800?text=Nameless+King',
