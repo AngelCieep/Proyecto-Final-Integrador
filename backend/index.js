@@ -18,6 +18,7 @@ if (!MONGODB_URI) {
 const COLLECTIONS = {
   bosses: 'bosses_dark_souls',
   boticaria: 'personajes_boticaria',
+  personajes: 'personajes',
 };
 
 const client = new MongoClient(MONGODB_URI, {
@@ -138,6 +139,33 @@ app.get('/api/boticaria', async (req, res, next) => {
   try {
     const items = await getCollection('boticaria').find({}).toArray();
     res.json(items);
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.get('/api/personajes', async (req, res, next) => {
+  try {
+    const items = await getCollection('personajes').find({}).toArray();
+    res.json(items);
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.get('/api/personajes/:id', async (req, res, next) => {
+  try {
+    const objectId = parseObjectId(req.params.id);
+    if (!objectId) {
+      return res.status(400).json({ error: 'id invalido' });
+    }
+
+    const item = await getCollection('personajes').findOne({ _id: objectId });
+    if (!item) {
+      return res.status(404).json({ error: 'no encontrado' });
+    }
+
+    res.json(item);
   } catch (error) {
     next(error);
   }

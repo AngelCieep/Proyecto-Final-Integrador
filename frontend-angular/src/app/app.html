@@ -43,6 +43,9 @@
               <div>
                 <span class="name">{{ personaje.name }}</span>
                 <span class="meta">{{ personaje.role }}</span>
+                <span class="badge" [class.darksouls]="personaje.tipo === 'darksouls'" [class.boticaria]="personaje.tipo === 'boticaria'">
+                  {{ personaje.tipo === 'darksouls' ? 'Dark Souls' : 'Boticaria' }}
+                </span>
               </div>
             </button>
           </li>
@@ -57,6 +60,9 @@
             <div>
               <h3>{{ personaje.name }}</h3>
               <p class="detail-title">{{ personaje.role }}</p>
+              <span class="badge detail" [class.darksouls]="personaje.tipo === 'darksouls'" [class.boticaria]="personaje.tipo === 'boticaria'">
+                {{ personaje.tipo === 'darksouls' ? 'Dark Souls' : 'Boticaria' }}
+              </span>
             </div>
           </div>
           <div class="detail-grid">

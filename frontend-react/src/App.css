@@ -146,6 +146,29 @@
   color: rgba(236, 238, 245, 0.6);
 }
 
+.item-badge {
+  width: fit-content;
+  margin-top: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  letter-spacing: 0.12rem;
+  text-transform: uppercase;
+  border: 1px solid transparent;
+}
+
+.item-badge.darksouls {
+  background: rgba(255, 183, 133, 0.12);
+  border-color: rgba(255, 183, 133, 0.6);
+  color: #ffb785;
+}
+
+.item-badge.boticaria {
+  background: rgba(168, 240, 198, 0.12);
+  border-color: rgba(168, 240, 198, 0.6);
+  color: #a8f0c6;
+}
+
 .avatar {
   width: 52px;
   height: 68px;
@@ -184,6 +207,29 @@
 .detail-title {
   margin: 0 0 14px;
   color: #ffb785;
+}
+
+.detail-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  letter-spacing: 0.12rem;
+  text-transform: uppercase;
+  border: 1px solid transparent;
+}
+
+.detail-badge.darksouls {
+  background: rgba(255, 183, 133, 0.12);
+  border-color: rgba(255, 183, 133, 0.6);
+  color: #ffb785;
+}
+
+.detail-badge.boticaria {
+  background: rgba(168, 240, 198, 0.12);
+  border-color: rgba(168, 240, 198, 0.6);
+  color: #a8f0c6;
 }
 
 .detail-grid {

@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 
-type Boss = {
+type Personaje = {
   _id?: string
+  tipo: 'darksouls' | 'boticaria'
   name: string
   title?: string
   location?: string
@@ -14,10 +15,11 @@ type Boss = {
 }
 
 const API_BASE = 'http://localhost:3000/api'
+const PERSONAJE_TIPO = 'darksouls'
 
 function App() {
-  const [bosses, setBosses] = useState<Boss[]>([])
-  const [selectedBoss, setSelectedBoss] = useState<Boss | null>(null)
+  const [personajes, setPersonajes] = useState<Personaje[]>([])
+  const [selectedPersonaje, setSelectedPersonaje] = useState<Personaje | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -26,16 +28,17 @@ function App() {
       try {
         setLoading(true)
         setError(null)
-        const bossRes = await fetch(`${API_BASE}/bosses`)
+        const personajeRes = await fetch(`${API_BASE}/personajes`)
 
-        if (!bossRes.ok) {
+        if (!personajeRes.ok) {
           throw new Error('No se pudo cargar la API')
         }
 
-        const bossData = (await bossRes.json()) as Boss[]
+        const personajeData = (await personajeRes.json()) as Personaje[]
+        const filtered = personajeData.filter((item) => item.tipo === PERSONAJE_TIPO)
 
-        setBosses(bossData)
-        setSelectedBoss(bossData[0] ?? null)
+        setPersonajes(filtered)
+        setSelectedPersonaje(filtered[0] ?? null)
       } catch (err) {
         setError('No se pudo cargar la API. Verifica el backend.')
       } finally {
@@ -59,11 +62,11 @@ function App() {
         <div className="hero-metrics">
           <div>
             <span>Coleccion</span>
-            <strong>Bosses</strong>
+            <strong>Personajes</strong>
           </div>
           <div>
             <span>Total</span>
-            <strong>{bosses.length}</strong>
+            <strong>{personajes.length}</strong>
           </div>
         </div>
       </header>
@@ -76,53 +79,61 @@ function App() {
           </div>
           <div className="panel-body">
             <ul className="panel-list">
-              {bosses.map((boss) => (
-                <li key={boss._id ?? boss.name}>
+              {personajes.map((personaje) => (
+                <li key={personaje._id ?? personaje.name}>
                   <button
-                    className={`item ${selectedBoss?._id === boss._id ? 'active' : ''}`}
-                    onClick={() => setSelectedBoss(boss)}
+                    className={`item ${selectedPersonaje?._id === personaje._id ? 'active' : ''}`}
+                    onClick={() => setSelectedPersonaje(personaje)}
                   >
                     <img
                       className="avatar"
-                      src={boss.imageUrl ?? 'https://placehold.co/96x128?text=Foto'}
-                      alt={boss.name}
+                      src={personaje.imageUrl ?? 'https://placehold.co/96x128?text=Foto'}
+                      alt={personaje.name}
                     />
                     <div>
-                      <span className="item-title">{boss.name}</span>
-                      <span className="item-meta">{boss.game}</span>
+                      <span className="item-title">{personaje.name}</span>
+                      <span className="item-meta">{personaje.game}</span>
+                      <span className={`item-badge ${personaje.tipo}`}>
+                        {personaje.tipo === 'darksouls' ? 'Dark Souls' : 'Boticaria'}
+                      </span>
                     </div>
                   </button>
                 </li>
               ))}
             </ul>
-            {selectedBoss && (
+            {selectedPersonaje && (
               <div className="panel-detail">
                 <div className="detail-header">
                   <img
                     className="portrait"
-                    src={selectedBoss.imageUrl ?? 'https://placehold.co/240x320?text=Foto'}
-                    alt={selectedBoss.name}
+                    src={selectedPersonaje.imageUrl ?? 'https://placehold.co/240x320?text=Foto'}
+                    alt={selectedPersonaje.name}
                   />
                   <div>
-                    <h3>{selectedBoss.name}</h3>
-                    <p className="detail-title">{selectedBoss.title}</p>
+                    <h3>{selectedPersonaje.name}</h3>
+                    <p className="detail-title">{selectedPersonaje.title}</p>
+                    <span className={`detail-badge ${selectedPersonaje.tipo}`}>
+                      {selectedPersonaje.tipo === 'darksouls' ? 'Dark Souls' : 'Boticaria'}
+                    </span>
                   </div>
                 </div>
                 <div className="detail-grid">
                   <div>
                     <span className="label">Lugar</span>
-                    <span>{selectedBoss.location ?? 'N/A'}</span>
+                    <span>{selectedPersonaje.location ?? 'N/A'}</span>
                   </div>
                   <div>
                     <span className="label">Debilidad</span>
-                    <span>{selectedBoss.weakness ?? 'N/A'}</span>
+                    <span>{selectedPersonaje.weakness ?? 'N/A'}</span>
                   </div>
                   <div>
                     <span className="label">Dificultad</span>
-                    <span>{selectedBoss.difficulty ?? 'N/A'}</span>
+                    <span>{selectedPersonaje.difficulty ?? 'N/A'}</span>
                   </div>
                 </div>
-                <p className="detail-desc">{selectedBoss.description ?? 'Sin descripcion.'}</p>
+                <p className="detail-desc">
+                  {selectedPersonaje.description ?? 'Sin descripcion.'}
+                </p>
               </div>
             )}
           </div>

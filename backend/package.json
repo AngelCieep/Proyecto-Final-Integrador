@@ -8,7 +8,8 @@
     "start": "node index.js",
     "seed": "node seed.js",
     "seed-images": "node seed-images.js",
-    "check-db": "node check-db.js"
+    "check-db": "node check-db.js",
+    "merge-personajes": "node merge-personajes.js"
   },
   "dependencies": {
     "cors": "^2.8.5",

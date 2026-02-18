@@ -180,6 +180,36 @@ h1 {
 	color: rgba(246, 242, 234, 0.6);
 }
 
+.badge {
+	width: fit-content;
+	margin-top: 6px;
+	padding: 4px 10px;
+	border-radius: 999px;
+	font-size: 0.7rem;
+	letter-spacing: 0.12rem;
+	text-transform: uppercase;
+	border: 1px solid transparent;
+}
+
+.badge.detail {
+	display: inline-flex;
+	align-items: center;
+	padding: 6px 14px;
+	font-size: 0.75rem;
+}
+
+.badge.darksouls {
+	background: rgba(243, 197, 122, 0.12);
+	border-color: rgba(243, 197, 122, 0.6);
+	color: #f3c57a;
+}
+
+.badge.boticaria {
+	background: rgba(183, 245, 198, 0.12);
+	border-color: rgba(183, 245, 198, 0.6);
+	color: #b7f5c6;
+}
+
 .detail {
 	background: rgba(10, 10, 14, 0.6);
 	border-radius: 18px;
