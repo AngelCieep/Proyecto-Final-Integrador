@@ -12,7 +12,7 @@ if (!uri) {
 }
 
 const bossesImages = {
-  'Artorias the Abysswalker': 'https://cdnb.artstation.com/p/assets/images/images/015/788/393/large/brian-moncus-artorias1.jpg?1549640388',
+  'Artorias the Abysswalker': 'https://placehold.co/600x800?text=Artorias+the+Abysswalker',
   'Ornstein and Smough': 'https://placehold.co/600x800?text=Ornstein+%26+Smough',
   'Sister Friede': 'https://placehold.co/600x800?text=Sister+Friede',
   'Nameless King': 'https://placehold.co/600x800?text=Nameless+King',
@@ -21,7 +21,7 @@ const bossesImages = {
 };
 
 const boticariaImages = {
-  Maomao: 'https://static.wikia.nocookie.net/kusuriya-no-hitorigoto/images/2/26/Maomao_%28Anime%29.png/revision/latest?cb=20230819200042',
+  Maomao: 'https://placehold.co/600x800?text=Maomao',
   Jinshi: 'https://placehold.co/600x800?text=Jinshi',
   Gaoshun: 'https://placehold.co/600x800?text=Gaoshun',
   Gyokuyou: 'https://placehold.co/600x800?text=Gyokuyou',
