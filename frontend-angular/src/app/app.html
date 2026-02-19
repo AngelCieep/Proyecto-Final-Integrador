@@ -99,58 +99,63 @@
           </li>
         </ul>
         <div class="detail" *ngIf="selectedPersonaje() as personaje">
-          <div class="detail-header">
-            <img
-              class="portrait"
-              [src]="personaje.imageUrl || 'https://placehold.co/240x320?text=Foto'"
-              [alt]="personaje.name"
-            />
-            <div>
+          <!-- Información del personaje -->
+          <div class="detail-info">
+            <div class="detail-header-info">
               <h3>{{ personaje.name }}</h3>
               <p class="detail-title">{{ personaje.role || personaje.title || 'Sin título' }}</p>
               <span class="badge detail" [class.darksouls]="personaje.tipo === 'darksouls'" [class.boticaria]="personaje.tipo === 'boticaria'">
                 {{ personaje.tipo === 'darksouls' ? 'Dark Souls' : 'Boticaria' }}
               </span>
             </div>
+            
+            <!-- Detalles específicos de Boticaria -->
+            <div class="detail-grid" *ngIf="personaje.tipo === 'boticaria'">
+              <div>
+                <span class="label">Afiliación</span>
+                <span class="value">{{ personaje.affiliation || 'N/A' }}</span>
+              </div>
+              <div>
+                <span class="label">Región</span>
+                <span class="value">{{ personaje.region || 'N/A' }}</span>
+              </div>
+              <div>
+                <span class="label">Rasgos</span>
+                <span class="value">{{ personaje.traits?.join(', ') || 'N/A' }}</span>
+              </div>
+            </div>
+            
+            <!-- Detalles específicos de Dark Souls -->
+            <div class="detail-grid" *ngIf="personaje.tipo === 'darksouls'">
+              <div>
+                <span class="label">Juego</span>
+                <span class="value">{{ personaje.game || 'N/A' }}</span>
+              </div>
+              <div>
+                <span class="label">Ubicación</span>
+                <span class="value">{{ personaje.location || 'N/A' }}</span>
+              </div>
+              <div>
+                <span class="label">Debilidad</span>
+                <span class="value">{{ personaje.weakness || 'N/A' }}</span>
+              </div>
+              <div>
+                <span class="label">Dificultad</span>
+                <span class="value">{{ personaje.difficulty || 'N/A' }}</span>
+              </div>
+            </div>
+            
+            <p class="detail-desc">{{ personaje.description || 'Sin descripción.' }}</p>
           </div>
           
-          <!-- Detalles específicos de Boticaria -->
-          <div class="detail-grid" *ngIf="personaje.tipo === 'boticaria'">
-            <div>
-              <span class="label">Afiliación</span>
-              <span class="value">{{ personaje.affiliation || 'N/A' }}</span>
-            </div>
-            <div>
-              <span class="label">Región</span>
-              <span class="value">{{ personaje.region || 'N/A' }}</span>
-            </div>
-            <div>
-              <span class="label">Rasgos</span>
-              <span class="value">{{ personaje.traits?.join(', ') || 'N/A' }}</span>
-            </div>
+          <!-- Imagen grande del personaje -->
+          <div class="detail-image-container">
+            <img
+              class="portrait-large"
+              [src]="personaje.imageUrl || 'https://placehold.co/600x800?text=Foto'"
+              [alt]="personaje.name"
+            />
           </div>
-          
-          <!-- Detalles específicos de Dark Souls -->
-          <div class="detail-grid" *ngIf="personaje.tipo === 'darksouls'">
-            <div>
-              <span class="label">Juego</span>
-              <span class="value">{{ personaje.game || 'N/A' }}</span>
-            </div>
-            <div>
-              <span class="label">Ubicación</span>
-              <span class="value">{{ personaje.location || 'N/A' }}</span>
-            </div>
-            <div>
-              <span class="label">Debilidad</span>
-              <span class="value">{{ personaje.weakness || 'N/A' }}</span>
-            </div>
-            <div>
-              <span class="label">Dificultad</span>
-              <span class="value">{{ personaje.difficulty || 'N/A' }}</span>
-            </div>
-          </div>
-          
-          <p class="detail-desc">{{ personaje.description || 'Sin descripción.' }}</p>
         </div>
       </div>
     </div>

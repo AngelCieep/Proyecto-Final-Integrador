@@ -36,20 +36,72 @@
 	border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.detail-header {
+.detail {
+	background: rgba(10, 10, 14, 0.6);
+	border-radius: 18px;
+	padding: 20px;
+	border: 1px solid rgba(255, 255, 255, 0.08);
 	display: flex;
-	gap: 18px;
-	align-items: center;
-	margin-bottom: 16px;
+	flex-direction: column;
+	gap: 24px;
 }
 
-.portrait {
-	width: 120px;
-	height: 160px;
+.detail-info {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.detail-header-info {
+	padding-bottom: 12px;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.detail h3 {
+	margin: 0 0 6px;
+	font-size: 1.6rem;
+	font-weight: 700;
+}
+
+.detail-title {
+	margin: 0 0 12px;
+	color: #f3c57a;
+	font-weight: 500;
+	font-size: 1.05rem;
+}
+
+.detail-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+	gap: 12px;
+}
+
+.detail-desc {
+	margin: 0;
+	color: rgba(246, 242, 234, 0.7);
+	line-height: 1.6;
+	font-size: 0.95rem;
+}
+
+.detail-image-container {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: rgba(0, 0, 0, 0.3);
+	border-radius: 16px;
+	padding: 20px;
+	border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.portrait-large {
+	width: 100%;
+	max-width: 500px;
+	height: auto;
 	border-radius: 16px;
 	object-fit: cover;
-	border: 1px solid rgba(255, 255, 255, 0.12);
-	box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35);
+	border: 2px solid rgba(255, 255, 255, 0.15);
+	box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
 }
 
 .kicker {
@@ -210,37 +262,6 @@ h1 {
 	color: #b7f5c6;
 }
 
-.detail {
-	background: rgba(10, 10, 14, 0.6);
-	border-radius: 18px;
-	padding: 20px;
-	border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.detail h3 {
-	margin: 0 0 6px;
-	font-size: 1.4rem;
-}
-
-.detail-title {
-	margin: 0 0 16px;
-	color: #f3c57a;
-	font-weight: 500;
-}
-
-.detail-grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-	gap: 12px;
-	margin-bottom: 16px;
-}
-
-.detail-desc {
-	margin: 0;
-	color: rgba(246, 242, 234, 0.7);
-	line-height: 1.6;
-}
-
 .card-header {
 	display: flex;
 	justify-content: space-between;
@@ -378,6 +399,18 @@ h1 {
 	
 	.filter-btn {
 		flex: 1;
+	}
+	
+	.portrait-large {
+		max-width: 100%;
+	}
+	
+	.detail-image-container {
+		padding: 12px;
+	}
+	
+	.detail {
+		padding: 16px;
 	}
 }
 
