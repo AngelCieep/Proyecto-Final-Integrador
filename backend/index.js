@@ -171,6 +171,21 @@ app.get('/api/personajes/:id', async (req, res, next) => {
   }
 });
 
+app.post('/api/personajes', async (req, res, next) => {
+  try {
+    if (!req.body?.name) {
+      return res.status(400).json({ error: 'name es requerido' });
+    }
+
+    const payload = { ...req.body, createdAt: new Date() };
+    const result = await getCollection('personajes').insertOne(payload);
+    const created = await getCollection('personajes').findOne({ _id: result.insertedId });
+    res.status(201).json(created);
+  } catch (error) {
+    next(error);
+  }
+});
+
 app.get('/api/boticaria/:id', async (req, res, next) => {
   try {
     const objectId = parseObjectId(req.params.id);

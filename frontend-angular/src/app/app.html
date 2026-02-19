@@ -2,21 +2,25 @@
   <header class="hero">
     <div class="hero-copy">
       <p class="kicker">Proyecto API</p>
-      <h1>Personajes de La Boticaria</h1>
+      <h1>Gestión de Personajes</h1>
       <p class="subtitle">
-        Explora el elenco principal del palacio y sus detalles clave.
+        Explora y gestiona personajes de Dark Souls y La Boticaria.
       </p>
       <div class="status" *ngIf="loading()">Cargando datos...</div>
       <div class="status error" *ngIf="error()">{{ error() }}</div>
     </div>
     <div class="hero-panel">
       <div class="panel-item">
-        <span class="label">Coleccion</span>
-        <span class="value">Boticaria</span>
+        <span class="label">Total</span>
+        <span class="value">{{ totalPersonajes() }}</span>
       </div>
       <div class="panel-item">
-        <span class="label">Personajes</span>
-        <span class="value">{{ boticaria().length }}</span>
+        <span class="label">Dark Souls</span>
+        <span class="value">{{ totalDarkSouls() }}</span>
+      </div>
+      <div class="panel-item">
+        <span class="label">Boticaria</span>
+        <span class="value">{{ totalBoticaria() }}</span>
       </div>
     </div>
   </header>
@@ -24,16 +28,60 @@
   <section class="grid">
     <div class="card">
       <div class="card-header">
-        <h2>Personajes de La Boticaria</h2>
-        <p>Selecciona un personaje para ver el detalle.</p>
+        <div>
+          <h2>Personajes</h2>
+          <p>{{ personajesFiltrados().length }} personajes encontrados</p>
+        </div>
+        <button class="btn-add" (click)="openForm()">
+          + Añadir Personaje
+        </button>
       </div>
+
+      <!-- Buscador y Filtros -->
+      <div class="toolbar">
+        <div class="search-box">
+          <input 
+            type="text" 
+            class="search-input"
+            placeholder="Buscar por nombre, rol o título..."
+            [value]="searchTerm()"
+            (input)="searchTerm.set($any($event.target).value)"
+          />
+          <button class="btn-clear" *ngIf="searchTerm()" (click)="clearSearch()">×</button>
+        </div>
+        
+        <div class="filters">
+          <button 
+            class="filter-btn"
+            [class.active]="filtroActivo() === 'todos'"
+            (click)="setFiltro('todos')"
+          >
+            Todos
+          </button>
+          <button 
+            class="filter-btn darksouls"
+            [class.active]="filtroActivo() === 'darksouls'"
+            (click)="setFiltro('darksouls')"
+          >
+            Dark Souls
+          </button>
+          <button 
+            class="filter-btn boticaria"
+            [class.active]="filtroActivo() === 'boticaria'"
+            (click)="setFiltro('boticaria')"
+          >
+            Boticaria
+          </button>
+        </div>
+      </div>
+
       <div class="split">
         <ul class="list">
-          <li *ngFor="let personaje of boticaria()">
+          <li *ngFor="let personaje of personajesFiltrados()">
             <button
               class="list-item"
-              [class.active]="selectedBoticaria()?._id === personaje._id"
-              (click)="selectBoticaria(personaje)"
+              [class.active]="selectedPersonaje()?._id === personaje._id"
+              (click)="selectPersonaje(personaje)"
             >
               <img
                 class="avatar"
@@ -42,7 +90,7 @@
               />
               <div>
                 <span class="name">{{ personaje.name }}</span>
-                <span class="meta">{{ personaje.role }}</span>
+                <span class="meta">{{ personaje.role || personaje.title || 'Sin título' }}</span>
                 <span class="badge" [class.darksouls]="personaje.tipo === 'darksouls'" [class.boticaria]="personaje.tipo === 'boticaria'">
                   {{ personaje.tipo === 'darksouls' ? 'Dark Souls' : 'Boticaria' }}
                 </span>
@@ -50,7 +98,7 @@
             </button>
           </li>
         </ul>
-        <div class="detail" *ngIf="selectedBoticaria() as personaje">
+        <div class="detail" *ngIf="selectedPersonaje() as personaje">
           <div class="detail-header">
             <img
               class="portrait"
@@ -59,19 +107,21 @@
             />
             <div>
               <h3>{{ personaje.name }}</h3>
-              <p class="detail-title">{{ personaje.role }}</p>
+              <p class="detail-title">{{ personaje.role || personaje.title || 'Sin título' }}</p>
               <span class="badge detail" [class.darksouls]="personaje.tipo === 'darksouls'" [class.boticaria]="personaje.tipo === 'boticaria'">
                 {{ personaje.tipo === 'darksouls' ? 'Dark Souls' : 'Boticaria' }}
               </span>
             </div>
           </div>
-          <div class="detail-grid">
+          
+          <!-- Detalles específicos de Boticaria -->
+          <div class="detail-grid" *ngIf="personaje.tipo === 'boticaria'">
             <div>
-              <span class="label">Afiliacion</span>
+              <span class="label">Afiliación</span>
               <span class="value">{{ personaje.affiliation || 'N/A' }}</span>
             </div>
             <div>
-              <span class="label">Region</span>
+              <span class="label">Región</span>
               <span class="value">{{ personaje.region || 'N/A' }}</span>
             </div>
             <div>
@@ -79,9 +129,218 @@
               <span class="value">{{ personaje.traits?.join(', ') || 'N/A' }}</span>
             </div>
           </div>
-          <p class="detail-desc">{{ personaje.description || 'Sin descripcion.' }}</p>
+          
+          <!-- Detalles específicos de Dark Souls -->
+          <div class="detail-grid" *ngIf="personaje.tipo === 'darksouls'">
+            <div>
+              <span class="label">Juego</span>
+              <span class="value">{{ personaje.game || 'N/A' }}</span>
+            </div>
+            <div>
+              <span class="label">Ubicación</span>
+              <span class="value">{{ personaje.location || 'N/A' }}</span>
+            </div>
+            <div>
+              <span class="label">Debilidad</span>
+              <span class="value">{{ personaje.weakness || 'N/A' }}</span>
+            </div>
+            <div>
+              <span class="label">Dificultad</span>
+              <span class="value">{{ personaje.difficulty || 'N/A' }}</span>
+            </div>
+          </div>
+          
+          <p class="detail-desc">{{ personaje.description || 'Sin descripción.' }}</p>
         </div>
       </div>
     </div>
   </section>
+
+  <!-- Modal para añadir personaje -->
+  <div class="modal-overlay" *ngIf="showForm()" (click)="closeForm()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Añadir Nuevo Personaje</h2>
+        <button class="btn-close" (click)="closeForm()">×</button>
+      </div>
+      
+      <form class="form" (ngSubmit)="createPersonaje()">
+        <!-- Selector de Tipo -->
+        <div class="form-group">
+          <label for="tipo">Tipo de Personaje *</label>
+          <select 
+            id="tipo" 
+            [(ngModel)]="newPersonaje.tipo" 
+            name="tipo"
+            class="select-input"
+          >
+            <option value="boticaria">Boticaria</option>
+            <option value="darksouls">Dark Souls</option>
+          </select>
+        </div>
+
+        <div class="form-divider"></div>
+
+        <!-- Campos comunes -->
+        <div class="form-group">
+          <label for="name">Nombre *</label>
+          <input 
+            type="text" 
+            id="name" 
+            [(ngModel)]="newPersonaje.name" 
+            name="name"
+            placeholder="Ej: Maomao o Artorias"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="imageUrl">URL de Imagen</label>
+          <input 
+            type="url" 
+            id="imageUrl" 
+            [(ngModel)]="newPersonaje.imageUrl" 
+            name="imageUrl"
+            placeholder="https://ejemplo.com/imagen.jpg"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="description">Descripción</label>
+          <textarea 
+            id="description" 
+            [(ngModel)]="newPersonaje.description" 
+            name="description"
+            rows="3"
+            placeholder="Descripción del personaje..."
+          ></textarea>
+        </div>
+
+        <!-- Campos específicos de Boticaria -->
+        <div *ngIf="!isDarkSoulsForm()">
+          <div class="form-divider"></div>
+          <h3 class="form-section-title">Datos de Boticaria</h3>
+
+          <div class="form-group">
+            <label for="role">Rol</label>
+            <input 
+              type="text" 
+              id="role" 
+              [(ngModel)]="newPersonaje.role" 
+              name="role"
+              placeholder="Ej: Catadora de venenos"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="affiliation">Afiliación</label>
+            <input 
+              type="text" 
+              id="affiliation" 
+              [(ngModel)]="newPersonaje.affiliation" 
+              name="affiliation"
+              placeholder="Ej: Palacio Imperial"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="region">Región</label>
+            <input 
+              type="text" 
+              id="region" 
+              [(ngModel)]="newPersonaje.region" 
+              name="region"
+              placeholder="Ej: Palacio Trasero"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="traits">Rasgos (separados por comas)</label>
+            <input 
+              type="text" 
+              id="traits" 
+              [(ngModel)]="traitsInput" 
+              name="traits"
+              placeholder="Ej: Inteligente, Observadora, Pragmática"
+            />
+          </div>
+        </div>
+
+        <!-- Campos específicos de Dark Souls -->
+        <div *ngIf="isDarkSoulsForm()">
+          <div class="form-divider"></div>
+          <h3 class="form-section-title">Datos de Dark Souls</h3>
+
+          <div class="form-group">
+            <label for="title">Título</label>
+            <input 
+              type="text" 
+              id="title" 
+              [(ngModel)]="newPersonaje.title" 
+              name="title"
+              placeholder="Ej: Knight of Gwyn"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="game">Juego</label>
+            <input 
+              type="text" 
+              id="game" 
+              [(ngModel)]="newPersonaje.game" 
+              name="game"
+              placeholder="Ej: Dark Souls, Dark Souls III, Bloodborne"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="location">Ubicación</label>
+            <input 
+              type="text" 
+              id="location" 
+              [(ngModel)]="newPersonaje.location" 
+              name="location"
+              placeholder="Ej: Royal Wood"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="weakness">Debilidad</label>
+            <input 
+              type="text" 
+              id="weakness" 
+              [(ngModel)]="newPersonaje.weakness" 
+              name="weakness"
+              placeholder="Ej: strike damage, fire"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="difficulty">Dificultad</label>
+            <select 
+              id="difficulty" 
+              [(ngModel)]="newPersonaje.difficulty" 
+              name="difficulty"
+              class="select-input"
+            >
+              <option value="">Selecciona...</option>
+              <option value="low">Baja</option>
+              <option value="medium">Media</option>
+              <option value="high">Alta</option>
+              <option value="very high">Muy Alta</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" (click)="closeForm()" [disabled]="saving()">
+            Cancelar
+          </button>
+          <button type="submit" class="btn-primary" [disabled]="saving()">
+            {{ saving() ? 'Guardando...' : 'Crear Personaje' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
